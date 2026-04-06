@@ -12,12 +12,14 @@ arlind.dev: personal blog for Arlind. Built with Hugo. Topics: career lessons, t
 - Layouts in `layouts/` (no external theme)
 - Articles are markdown files in `content/blog/`
 - Single CSS file in `static/css/style.css`
+- Syntax highlighting: Chroma with CSS classes (`noClasses = false`), github (light) and github-dark (dark) themes appended to style.css
 - Fonts: Inter (body/UI) and Lora (home intro) via Google Fonts
 - No custom JavaScript (only Google Analytics gtag)
 - Deploy: cron polls GitHub every 3 minutes, pulls new commits, runs `hugo --minify`
 - Deploy script tracks last built commit in `/var/www/arlind.dev/.built-commit` to handle local pushes
 - Served by Caddy at https://arlind.dev
 - For local pushes, run `hugo --minify --destination /var/www/arlind.dev` directly (deploy script skips when HEAD matches origin)
+- GitLab (gitlab.codility.net): accessible via `glab` CLI, authenticated as arlind.hoxha
 
 ## Commands
 
@@ -85,8 +87,10 @@ When asked to suggest article topics, draw from:
 - Current trends in software engineering relevant to the user's domain
 - Gaps in the existing content (check `content/blog/` for what's already published)
 
-Propose topics as a numbered list with:
+Propose 20-30 technical topics (Arlind is selective and prefers quantity to choose from). For each:
 1. A working title
 2. One-sentence description
 3. Suggested tags
-4. Estimated reading time
+4. Why readers care
+
+Focus on technical problems grounded in real code/MRs, not abstract leadership advice. Use `glab api` to pull MR descriptions for technical depth. Arlind has rejected 40+ career/management topic ideas in the past. He wants concrete engineering content.
