@@ -1,6 +1,6 @@
 ---
 title: "Progress Over Perfection: How to Ship When Your Code Embarrasses You"
-date: 2026-04-06
+date: 2026-04-06T12:00:00
 slug: "progress-over-perfection"
 description: "Why the best engineers struggle most with shipping imperfect code, and how to build the instinct for when good enough actually is."
 tags: ["engineering", "reflection"]

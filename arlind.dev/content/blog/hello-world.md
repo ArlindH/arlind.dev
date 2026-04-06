@@ -1,6 +1,6 @@
 ---
 title: "Hello World"
-date: 2026-04-06
+date: 2026-04-06T08:00:00
 slug: "hello-world"
 description: "A brief introduction and what to expect from this blog."
 tags: ["reflection"]
