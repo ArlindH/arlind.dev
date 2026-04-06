@@ -2,7 +2,7 @@
 title: "Django Signals Are a Convenience Tax"
 date: 2026-04-06T14:00:00
 slug: "django-signals-are-a-convenience-tax"
-description: "Django signals make single-record workflows elegant, but they quietly make bulk operations impossible. Here's what that costs at scale, and how to design for both paths from the start."
+description: "You can always add signals later for specific decoupling needs. You can't easily remove them once they're load-bearing. Here's what that costs at scale, and how to design for both paths from the start."
 tags: ["engineering"]
 draft: false
 ---
@@ -71,9 +71,11 @@ Far fewer queries. But no signals fire. No notifications. No invoices. Everythin
 
 This isn't a bug. It's a design tension baked into the framework. Signals are a per-instance abstraction. Bulk operations are a set-based abstraction. Django doesn't pretend they're the same thing.
 
+A scope note: everything in this post is about synchronous Django. Django 4.1+ added async signal dispatch (`asend`, `asend_robust`), and async + signals + bulk is its own tar pit. The bulk-skip behavior is identical, but sync receivers connected to signals fired from async contexts get wrapped in `sync_to_async`, which serializes them further. The advice here transfers, with extra care around `on_commit` in async contexts.
+
 ## The real cost
 
-I've hit this in systems where a batch operation needed to process hundreds of records. An admin action to archive all pending items in a group. The original code looked something like this:
+The Order example above is simplified to show the mechanism. Here's a different scenario where I hit this for real: a batch operation that needed to process hundreds of records. An admin action to archive all pending items in a group. The original code looked something like this:
 
 ```python
 def archive_items(queryset):
@@ -84,7 +86,7 @@ def archive_items(queryset):
 
 The signal receivers handled everything: clearing related timestamps, cancelling pending charges, notifying external services. Each concern lived in its own receiver. It was well-organized.
 
-Then the dataset grew. Archiving started taking minutes. Database connections piled up. Timeouts hit. The code was correct, just architecturally unprepared for the batch path.
+Then the dataset grew. Archiving started taking long enough that the load balancer killed the request. The code was correct, just architecturally unprepared for the batch path.
 
 ## The deeper question: should signals own your business logic?
 
@@ -102,6 +104,10 @@ from functools import partial
 def create_order(data):
     with transaction.atomic():
         order = Order.objects.create(**data)
+        Notification.objects.create(
+            user=order.user,
+            message=f"Order #{order.id} confirmed",
+        )
         Invoice.objects.create(order=order, amount=order.total)
         transaction.on_commit(partial(send_confirmation.delay, order.pk))
     return order
@@ -112,11 +118,18 @@ def create_orders_bulk(data_list):
         orders = Order.objects.bulk_create(
             [Order(**d) for d in data_list]
         )
+        Notification.objects.bulk_create([
+            Notification(
+                user_id=o.user_id,
+                message=f"Order #{o.id} confirmed",
+            ) for o in orders
+        ])
         Invoice.objects.bulk_create([
             Invoice(order_id=o.pk, amount=o.total) for o in orders
         ])
-        for order in orders:
-            transaction.on_commit(partial(send_confirmation.delay, order.pk))
+        transaction.on_commit(
+            partial(send_confirmations_batch.delay, [o.pk for o in orders])
+        )
     return orders
 ```
 
@@ -126,7 +139,7 @@ A subtle assumption in the bulk path: we read `o.total` off the freshly-built `O
 
 A note on `transaction.on_commit`: the Celery tasks are registered *inside* the atomic block but only dispatched *after* the transaction commits. This avoids a subtle but common bug where the async worker picks up the task before the data is actually visible in the database. Using `functools.partial` instead of a lambda is the idiomatic Django pattern, especially inside loops where closures over loop variables can bite you.
 
-One thing to notice: the loop registers N separate on-commit callbacks, each enqueueing one Celery task. We've solved the database query problem but re-introduced an N-fanout on the message broker. For true bulk dispatch, you'd register a single callback that enqueues a batch task: `transaction.on_commit(partial(send_confirmations_batch.delay, [o.pk for o in orders]))`. Whether you need that depends on N and your broker's tolerance.
+Notice the bulk path registers a single on-commit callback that enqueues one batch Celery task instead of N individual tasks. This is deliberate. If you registered N separate callbacks you'd solve the database query problem but re-introduce an N-fanout on the message broker. Whether batching matters depends on N and your broker's tolerance, but it's worth thinking about if you're optimizing the DB path anyway.
 
 Also worth noting: `bulk_create` returning objects with primary keys depends on your database backend. PostgreSQL and SQLite support this. Historically MySQL did not, though MariaDB 10.5+ does, and this area has seen incremental improvements across recent Django versions. Check your backend and Django version if your bulk side-effect logic needs PKs. The examples here assume PostgreSQL, which is the most common setup I've worked with.
 
@@ -136,7 +149,7 @@ That said, signals still have legitimate uses: framework-level hooks (like `djan
 
 ## When you're stuck with signals: the bulk-split pattern
 
-If you're working in a codebase that already relies heavily on signals, a full rewrite to a service layer isn't realistic overnight. Here's a pragmatic pattern. Split records by their characteristics: which ones genuinely need per-record side effects, and which can be handled in bulk?
+Back to the archiving scenario. If you're working in a codebase that already relies heavily on signals, a full rewrite to a service layer isn't realistic overnight. Here's a pragmatic pattern. Split records by their characteristics: which ones genuinely need per-record side effects, and which can be handled in bulk?
 
 ```python
 def archive_items(queryset):
@@ -198,11 +211,11 @@ It's a half-step toward a full service layer. Not the final architecture, but a 
 
 ## The strangler fig
 
-In one codebase I worked in, we had two parallel code paths for creating the same object. The original path used `Model.objects.create()` with signals for all the side effects. A newer path used a builder class with `bulk_create` for performance. They'd coexisted for years, slowly diverging. One path had bug fixes the other didn't. One handled edge cases the other didn't know about.
+Different codebase, different problem, same underlying tension. We had two parallel code paths for creating the same object. The original path used `Model.objects.create()` with signals for all the side effects. A newer path used a builder class with `bulk_create` for performance. They'd coexisted for years, slowly diverging. One path had bug fixes the other didn't. One handled edge cases the other didn't know about.
 
 Killing the old path was a 42-file merge request. Every test that called the legacy method needed updating. Every edge case the old code handled had to be ported. The builder was updated to always handle the database operation, then explicitly run side-effect logic afterward, whether for one record or a thousand.
 
-It took weeks. But after it landed, there was one way to create that object. One set of business rules. One place to add new side effects. The 42 files were the cost of years of "we'll unify these later."
+It took weeks. But after it landed, there was one way to create that object. One set of business rules. One place to add new side effects. We deleted roughly a thousand lines of duplicated edge-case handling, and the next three features that touched ticket creation took days instead of weeks because nobody had to ask "which path does this go in?" The 42 files were the cost of years of "we'll unify these later."
 
 ## The tax, quantified
 
