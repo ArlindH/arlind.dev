@@ -48,6 +48,10 @@ Worth noting: `QuerySet.delete()` is the odd one out. It *can* fire `pre_delete`
 
 There's a related sharp edge worth mentioning: `m2m_changed` signals. Bulk-assigning through models with `Through.objects.bulk_create()` skips `m2m_changed` the same way `bulk_create` skips `post_save`. This trips people up even more, because Django's M2M API hides the through model and the signal gap is less obvious.
 
+It's also worth distinguishing `pre_save` from `post_save`, because they fail in different ways when skipped. `post_save` receivers typically trigger side effects: notifications, billing, external syncing. Missing those means something didn't happen, but the data in your database is still correct. `pre_save` receivers often *mutate the instance*: setting slugs, normalizing fields, computing denormalized values. When `bulk_create` skips `pre_save`, you don't just lose side effects. You write unnormalized data to the database. That's a categorically worse failure mode.
+
+For completeness: `update_or_create()` and `get_or_create()` *do* fire signals, even though their names sound bulk-ish. The signal gap is specifically about the methods designed for set-based operations.
+
 When you need to create or update records in bulk, you have two options. Loop:
 
 ```python
@@ -88,6 +92,8 @@ Before jumping to patterns that make signals work at scale, it's worth asking wh
 
 Signals create invisible coupling. You can't look at `Order.objects.create()` and know what happens next. You have to grep for every `post_save` receiver registered against `Order`, across every app in your project. In a large codebase with many teams contributing receivers, that search gets long.
 
+There's a deeper problem: receivers only fire if their module has been imported. That's why every Django project ends up with `def ready(self): from . import signals` in `AppConfig`. New engineers forget this, signals silently don't fire in management commands or test setups that don't go through the full app loader, and you get bugs that look like "it works in the web request but not in the cron job." The invisible coupling isn't just about finding the receivers. It's about knowing they're even active.
+
 The alternative is an explicit service layer:
 
 ```python
@@ -116,7 +122,11 @@ def create_orders_bulk(data_list):
 
 No signals. The call graph is explicit. You can read `create_order` and know exactly what happens. You can test each piece in isolation. When someone adds a new side effect, there's one place to put it for single-record and one for bulk, right next to each other.
 
+A subtle assumption in the bulk path: we read `o.total` off the freshly-built `Order` instances returned by `bulk_create`. That works because `total` was set in Python before the insert. If `total` were a database-computed default, a generated column, or set by a `pre_save` signal (which, per the thesis of this post, won't fire), it would be `None` or stale. The bulk path quietly assumes all relevant fields are Python-side. In codebases where that assumption doesn't hold, you'll need to re-fetch after the insert.
+
 A note on `transaction.on_commit`: the Celery tasks are registered *inside* the atomic block but only dispatched *after* the transaction commits. This avoids a subtle but common bug where the async worker picks up the task before the data is actually visible in the database. Using `functools.partial` instead of a lambda is the idiomatic Django pattern, especially inside loops where closures over loop variables can bite you.
+
+One thing to notice: the loop registers N separate on-commit callbacks, each enqueueing one Celery task. We've solved the database query problem but re-introduced an N-fanout on the message broker. For true bulk dispatch, you'd register a single callback that enqueues a batch task: `transaction.on_commit(partial(send_confirmations_batch.delay, [o.pk for o in orders]))`. Whether you need that depends on N and your broker's tolerance.
 
 Also worth noting: `bulk_create` returning objects with primary keys depends on your database backend. PostgreSQL and SQLite support this. Historically MySQL did not, though MariaDB 10.5+ does, and this area has seen incremental improvements across recent Django versions. Check your backend and Django version if your bulk side-effect logic needs PKs. The examples here assume PostgreSQL, which is the most common setup I've worked with.
 
