@@ -5,7 +5,7 @@
   </div>
 
   <h2>Recent Posts</h2>
-  {{ $posts := where .Site.RegularPages "Section" "blog" }}
+  {{ $posts := (where .Site.RegularPages "Section" "blog").ByDate.Reverse }}
   {{ if $posts }}
   <ul class="post-list">
     {{ range first 10 $posts }}
