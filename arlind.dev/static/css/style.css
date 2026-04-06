@@ -441,6 +441,7 @@ pre code {
 }
 
 /* Syntax highlighting - Chroma (github light / github-dark) */
+.chroma span { font-weight: normal !important; }
 /* Background */ .bg { background-color: var(--bg-code); }
 /* PreWrapper */ .chroma { background-color: var(--bg-code); }
 /* Other */ .chroma .x {  }
