@@ -10,13 +10,10 @@ You are helping Arlind write a blog post. The full process is: suggest topics, d
 
 ## Step 1: Gather source material
 
-Look for topics that are **3+ months old**. Recent events are too fresh. Focus on situations, decisions, and problems with enough distance for honest reflection.
-
-Pull from all available MCP-connected sources at runtime:
-- **Slack**: Search messages and threads from 3-12 months ago for interesting discussions, incidents, decisions, debates
-- **Linear**: Look at completed projects, resolved issues, post-mortems from 3+ months ago
-- **Notion**: Search documents, meeting notes, retrospectives, design docs from 3+ months ago
-- **Confluence**: Search for technical docs, architecture decisions, project wrap-ups from 3+ months ago
+Pull from all available MCP-connected sources at runtime. Cast a wide net with multiple searches across different keyword groups:
+- **Slack**: Search messages and threads for interesting discussions, incidents, decisions, debates
+- **Notion**: Search documents, meeting notes, retrospectives, design docs broadly
+- **Confluence**: Search for technical docs, architecture decisions, project wrap-ups
 - **Gmail**: Search for relevant threads about technical decisions or project outcomes
 
 Also check `content/blog/` for existing posts to avoid repeating topics.
@@ -39,7 +36,7 @@ Focus on ideas that have a transferable lesson, not just "here's what happened."
 - A common belief that turned out to be wrong in practice
 - A tradeoff that nobody talks about honestly
 
-**Important**: Everything must be anonymized. No company names, no people's names, no identifiable situations. Keep it high-level and universal.
+**Important: Anonymization is non-negotiable.** No company names, no product names, no people's names, no team names, no identifiable situations. Stakeholders and colleagues who might read the blog should not be able to trace any story back to a specific person, team, or org. Keep lessons universal and change details where needed to make stories untraceable while preserving the insight.
 
 Wait for Arlind to pick one (or suggest a variation).
 
