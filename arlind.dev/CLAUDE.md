@@ -11,9 +11,13 @@ arlind.dev: personal blog for Arlind. Built with Hugo. Topics: career lessons, t
 - Hugo static site (v0.123.7)
 - Layouts in `layouts/` (no external theme)
 - Articles are markdown files in `content/blog/`
-- Single CSS file in `static/css/style.css`, zero JavaScript
+- Single CSS file in `static/css/style.css`
+- Fonts: Inter (body/UI) and Lora (home intro) via Google Fonts
+- No custom JavaScript (only Google Analytics gtag)
 - Deploy: cron polls GitHub every 3 minutes, pulls new commits, runs `hugo --minify`
+- Deploy script tracks last built commit in `/var/www/arlind.dev/.built-commit` to handle local pushes
 - Served by Caddy at https://arlind.dev
+- For local pushes, run `hugo --minify --destination /var/www/arlind.dev` directly (deploy script skips when HEAD matches origin)
 
 ## Commands
 
@@ -32,13 +36,15 @@ arlind.dev: personal blog for Arlind. Built with Hugo. Topics: career lessons, t
 ```yaml
 ---
 title: "The Post Title"
-date: 2026-04-06
+date: 2026-04-06T12:00:00
 slug: "the-post-title"
 description: "A one-sentence summary for SEO and social sharing."
 tags: ["career", "engineering"]
 draft: false
 ---
 ```
+
+Note: Include a time component in `date` to control ordering when multiple posts share the same date.
 
 ### Writing guidelines
 
@@ -49,7 +55,7 @@ draft: false
 - Keep paragraphs short (3-4 sentences max)
 - For technical posts: include code blocks with language annotation
 - Target 800-1500 words unless the topic demands more
-- The `description` field is critical -- it appears in search results and social cards
+- The `description` field is critical -- it appears in search results, social cards, and as the TL;DR at the top of each article
 - Never use em dashes. Use commas, periods, or restructure the sentence instead
 - Never use the surname "Hoxha". Just use "Arlind" or nothing at all
 - Reference the site as arlind.dev, not by full name

@@ -14,6 +14,12 @@
     {{ end }}
   </header>
 
+  {{ with .Description }}
+  <div class="article-tldr">
+    <strong>TL;DR</strong> {{ . }}
+  </div>
+  {{ end }}
+
   <div class="article-content">
     {{ .Content }}
   </div>

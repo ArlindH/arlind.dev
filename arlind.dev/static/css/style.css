@@ -230,10 +230,11 @@ h3 {
 
 .home-intro p {
   font-family: "Lora", Georgia, serif;
-  font-size: 1.35rem;
-  line-height: 1.7;
-  color: var(--text);
+  font-size: 1.08rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
   font-weight: 500;
+  font-style: italic;
 }
 
 .home h2 {
@@ -284,6 +285,21 @@ h3 {
   padding: 0.2rem 0.65rem;
   border-radius: 100px;
   font-weight: 500;
+}
+
+.article-tldr {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  border-left: 2px solid var(--border);
+  padding: 0.6rem 1.2rem;
+  margin-bottom: 2.5rem;
+}
+
+.article-tldr strong {
+  color: var(--text);
+  font-weight: 600;
+  margin-right: 0.3rem;
 }
 
 /* Article content */
@@ -396,7 +412,7 @@ pre code {
   }
 
   .home-intro p {
-    font-size: 1.15rem;
+    font-size: 1.02rem;
   }
 
   .post-description {

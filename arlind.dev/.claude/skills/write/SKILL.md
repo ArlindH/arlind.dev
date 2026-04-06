@@ -47,9 +47,9 @@ Create the file at `content/blog/<slug>.md` with proper frontmatter:
 ```yaml
 ---
 title: "The Post Title"
-date: YYYY-MM-DD
+date: YYYY-MM-DDTHH:MM:SS
 slug: "the-slug"
-description: "One sentence for SEO and social cards."
+description: "One sentence for SEO, social cards, and the article TL;DR."
 tags: ["relevant", "tags"]
 draft: true
 ---
@@ -86,7 +86,7 @@ Keep editing the file in place. Show relevant sections after changes.
 Only when Arlind explicitly approves:
 
 1. Set `draft: false` in the frontmatter
-2. Verify the `description` field is compelling (it shows in search results and social cards)
+2. Verify the `description` field is compelling (it shows in search results, social cards, and as the TL;DR at the top of the article)
 3. Verify the `date` is set to today
 4. Run `hugo --minify` to verify the build succeeds
 5. Commit with message like: `Add post: <title>`
