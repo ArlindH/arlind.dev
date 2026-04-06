@@ -1,0 +1,21 @@
+{{ define "main" }}
+<div class="list-page">
+  <h1>{{ .Title }}</h1>
+  {{ .Content }}
+
+  {{ $pages := .Pages }}
+  {{ if $pages }}
+  <ul class="post-list">
+    {{ range $pages }}
+    <li>
+      <div class="post-row">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+        <a href="{{ .Permalink }}">{{ .Title }}</a>
+      </div>
+      {{ with .Description }}<p class="post-description">{{ . }}</p>{{ end }}
+    </li>
+    {{ end }}
+  </ul>
+  {{ end }}
+</div>
+{{ end }}

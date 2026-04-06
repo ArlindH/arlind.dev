@@ -1,0 +1,29 @@
+baseURL = "https://arlind.dev/"
+languageCode = "en-us"
+title = "arlind.dev"
+
+enableRobotsTXT = true
+
+[params]
+  description = "Career lessons, technical deep-dives, and personal reflections."
+  author = "Arlind"
+
+[markup.highlight]
+  style = "github"
+  lineNos = false
+  noClasses = true
+
+[markup.goldmark.renderer]
+  unsafe = false
+
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]
+
+[sitemap]
+  changefreq = "weekly"
+  priority = 0.5
+  filename = "sitemap.xml"
+
+[permalinks]
+  blog = "/blog/:slug/"
