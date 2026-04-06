@@ -42,9 +42,11 @@ Now try creating 500 orders at once.
 
 ## Where it breaks
 
-Django's `bulk_create` does not fire `pre_save` or `post_save` signals. Neither does `bulk_update`. Neither does `QuerySet.update()`. This is documented, intentional, and has been this way since these methods were introduced. It remains the case through Django 6.0. Multiple community proposals to add signal support have been discussed and declined, because firing per-instance signals would eliminate the performance benefit of bulk operations.
+Django's `bulk_create` does not fire `pre_save` or `post_save` signals. It doesn't call the model's `save()` method at all, which means any logic in an overridden `save()` is also bypassed. The same applies to `bulk_update` and `QuerySet.update()`. This is documented, intentional, and has been this way since these methods were introduced. It remains the case through Django 6.0. Multiple community proposals to add signal support have been discussed and declined, because firing per-instance signals would eliminate the performance benefit of bulk operations.
 
-Worth noting: `QuerySet.delete()` is the exception. It *does* fire `pre_delete` and `post_delete` per instance, because Django's deletion collector iterates over each object to resolve cascades. So the rule isn't "set-based operations skip signals." It's more nuanced than that, which is part of what makes this tricky.
+Worth noting: `QuerySet.delete()` is the odd one out. It *can* fire `pre_delete` and `post_delete` per instance, because Django's deletion collector iterates over objects to resolve cascades. But there's a subtlety: the collector has a "fast delete" optimization that skips per-object iteration when it's safe. Having any `pre_delete` or `post_delete` receiver connected disables this fast path and forces per-instance iteration. So the rule isn't "delete always iterates." It's "delete iterates when it has to, and signal receivers force it to." The bulk create/update story has no such fallback.
+
+There's a related sharp edge worth mentioning: `m2m_changed` signals. Bulk-assigning through models with `Through.objects.bulk_create()` skips `m2m_changed` the same way `bulk_create` skips `post_save`. This trips people up even more, because Django's M2M API hides the through model and the signal gap is less obvious.
 
 When you need to create or update records in bulk, you have two options. Loop:
 
@@ -53,7 +55,7 @@ for order_data in order_list:
     Order.objects.create(**order_data)  # fires signals, one at a time
 ```
 
-Each `.create()` triggers a database INSERT. Each signal receiver runs its own queries. If you have K queries across your receivers and you're creating N records, that's roughly N * (1 + K) total queries: N inserts plus K side-effect queries per record. For 500 orders with 3 receivers doing one query each, that's around 2,000 queries.
+Each `.create()` triggers a database INSERT. Each signal receiver runs its own queries. If you have K queries across your receivers and you're creating N records, that's a rough lower bound of N * (1 + K) total queries: N inserts plus K side-effect queries per record. In practice the real number is higher, because `create()` may also trigger unique checks, FK existence checks, and `pre_save` receivers that query. For 500 orders with 3 receivers doing one query each, the floor is around 2,000 queries. The ceiling is often worse.
 
 Or you can use `bulk_create`:
 
@@ -116,7 +118,7 @@ No signals. The call graph is explicit. You can read `create_order` and know exa
 
 A note on `transaction.on_commit`: the Celery tasks are registered *inside* the atomic block but only dispatched *after* the transaction commits. This avoids a subtle but common bug where the async worker picks up the task before the data is actually visible in the database. Using `functools.partial` instead of a lambda is the idiomatic Django pattern, especially inside loops where closures over loop variables can bite you.
 
-Also worth noting: `bulk_create` returns objects with primary keys on PostgreSQL and SQLite, but not on MySQL. If you're on MySQL and your bulk side-effect logic needs PKs, you'll need to re-fetch the created records. The examples here assume PostgreSQL, which is the most common setup I've worked with.
+Also worth noting: `bulk_create` returning objects with primary keys depends on your database backend. PostgreSQL and SQLite support this. Historically MySQL did not, though MariaDB 10.5+ does, and this area has seen incremental improvements across recent Django versions. Check your backend and Django version if your bulk side-effect logic needs PKs. The examples here assume PostgreSQL, which is the most common setup I've worked with.
 
 This is what many mature Django codebases evolve toward. The service layer is where most teams end up after enough signal-related pain.
 
@@ -129,12 +131,14 @@ If you're working in a codebase that already relies heavily on signals, a full r
 ```python
 def archive_items(queryset):
     with transaction.atomic():
-        needs_dispatch = queryset.filter(
-            Q(has_webhook=True) | Q(has_integration=True)
+        # Materialize once and lock rows to avoid re-evaluation surprises
+        needs_dispatch = list(
+            queryset.select_for_update().filter(
+                Q(has_webhook=True) | Q(has_integration=True)
+            )
         )
-        bulk_safe = queryset.exclude(
-            pk__in=needs_dispatch.values("pk")
-        )
+        dispatch_pks = [item.pk for item in needs_dispatch]
+        bulk_safe = queryset.exclude(pk__in=dispatch_pks)
 
         # Bulk path: direct SQL for the common case
         RelatedRecord.objects.filter(
@@ -152,6 +156,8 @@ def archive_items(queryset):
             item.status = "archived"
             item.save()  # signals fire for integration cleanup
 ```
+
+A subtle detail: we materialize `needs_dispatch` into a list early and lock the rows with `select_for_update()`. If we left it as a lazy queryset, it would be re-evaluated when iterated in the signal loop. That re-evaluation happens *after* `bulk_safe.update()` runs. If someone later edits the filter to include `status`, the second evaluation silently returns a different set of rows. Materializing once makes the intent explicit.
 
 For a batch of 500 items where none have external dependencies (the typical case in my experience), this collapses ~2,000 queries down to a handful. For the occasional item that needs the full signal treatment, it still gets it.
 

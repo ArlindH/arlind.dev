@@ -9,9 +9,8 @@ enableRobotsTXT = true
   author = "Arlind"
 
 [markup.highlight]
-  style = "github"
+  noClasses = false
   lineNos = false
-  noClasses = true
 
 [markup.goldmark.renderer]
   unsafe = false
