@@ -15,14 +15,25 @@ git fetch origin main --quiet
 LOCAL=$(git rev-parse HEAD)
 REMOTE=$(git rev-parse origin/main)
 
-if [ "$LOCAL" = "$REMOTE" ]; then
+# Check if the site has been built at the current commit
+BUILT_MARKER="$OUTPUT_DIR/.built-commit"
+BUILT_COMMIT=""
+if [ -f "$BUILT_MARKER" ]; then
+    BUILT_COMMIT=$(cat "$BUILT_MARKER")
+fi
+
+if [ "$LOCAL" = "$REMOTE" ] && [ "$BUILT_COMMIT" = "$LOCAL" ]; then
     exit 0
 fi
 
-logger -t "$LOG_TAG" "Deploying: ${LOCAL:0:7} -> ${REMOTE:0:7}"
-
-git reset --hard origin/main --quiet
+if [ "$LOCAL" != "$REMOTE" ]; then
+    logger -t "$LOG_TAG" "Deploying: ${LOCAL:0:7} -> ${REMOTE:0:7}"
+    git reset --hard origin/main --quiet
+else
+    logger -t "$LOG_TAG" "Rebuilding at ${LOCAL:0:7} (not yet deployed)"
+fi
 
 hugo --minify --destination "$OUTPUT_DIR"
+git rev-parse HEAD > "$BUILT_MARKER"
 
 logger -t "$LOG_TAG" "Deploy OK: now at $(git rev-parse --short HEAD)"
