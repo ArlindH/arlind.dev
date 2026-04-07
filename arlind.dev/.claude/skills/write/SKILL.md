@@ -42,10 +42,10 @@ Present 20-30 ideas (Arlind is selective). For each:
 - Concrete and actionable, not abstract leadership advice
 
 **What Arlind does NOT want:**
-- Career/leadership/management topics (rejected 40+ of these)
 - Topics that name or could identify colleagues, teams, or companies
 - Abstract "lessons learned" without technical substance
 - Anything that reads as bragging
+- Drafts that are too autobiographical or diary-like ("too specific, a lot of Is"). Use "you" more than "I". Keep it universal and compact, not a sequence of personal anecdotes.
 
 **Anonymization is non-negotiable.** No company names, no product names, no people's names, no team names, no identifiable situations.
 

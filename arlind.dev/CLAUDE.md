@@ -93,4 +93,4 @@ Propose 20-30 technical topics (Arlind is selective and prefers quantity to choo
 3. Suggested tags
 4. Why readers care
 
-Focus on technical problems grounded in real code/MRs, not abstract leadership advice. Use `glab api` to pull MR descriptions for technical depth. Arlind has rejected 40+ career/management topic ideas in the past. He wants concrete engineering content.
+Focus on technical problems grounded in real code/MRs, not abstract leadership advice. Use `glab api` to pull MR descriptions for technical depth. Non-technical/reflection posts are welcome but must be universal and compact, not autobiographical or diary-like.
