@@ -27,6 +27,10 @@ if [ "$LOCAL" = "$REMOTE" ] && [ "$BUILT_COMMIT" = "$LOCAL" ]; then
 fi
 
 if [ "$LOCAL" != "$REMOTE" ]; then
+    if ! git diff --quiet || ! git diff --cached --quiet; then
+        logger -t "$LOG_TAG" "Skipping deploy: uncommitted local changes"
+        exit 0
+    fi
     logger -t "$LOG_TAG" "Deploying: ${LOCAL:0:7} -> ${REMOTE:0:7}"
     git reset --hard origin/main --quiet
 else
