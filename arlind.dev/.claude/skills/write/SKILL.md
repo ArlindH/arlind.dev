@@ -47,7 +47,7 @@ Present 20-30 ideas (Arlind is selective). For each:
 - Anything that reads as bragging
 - Drafts that are too autobiographical or diary-like ("too specific, a lot of Is"). Use "you" more than "I". Keep it universal and compact, not a sequence of personal anecdotes.
 
-**Anonymization is non-negotiable.** No company names, no product names, no people's names, no team names, no identifiable situations.
+**Anonymization is non-negotiable.** No company names, no product names, no people's names, no team names, no identifiable situations. When drafting, do not use scenarios, examples, or feature descriptions that are directly attributable to a specific product or company. Replace real situations with generic equivalents that illustrate the same lesson (e.g., "analytics dashboard" instead of the actual feature name, "enterprise client" instead of the actual customer). The reader should never be able to reverse-engineer which company or product the story is about.
 
 Wait for Arlind to pick one (or suggest a variation).
 
