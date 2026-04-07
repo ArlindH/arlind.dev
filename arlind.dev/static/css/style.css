@@ -82,7 +82,7 @@ header nav {
 }
 
 .site-title {
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-family: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--text);
@@ -375,7 +375,7 @@ h3 {
 
 /* Code */
 code {
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-family: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   font-size: 0.86em;
   background: var(--bg-code);
   padding: 0.2em 0.4em;
