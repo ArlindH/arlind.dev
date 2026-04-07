@@ -1,6 +1,6 @@
 ---
 title: "When a Demo Reshuffles Your Roadmap"
-date: 2026-04-07T12:00:00
+date: 2026-04-07T07:00:00
 slug: "when-a-demo-reshuffles-your-roadmap"
 description: "Customer demos will expose what your roadmap got wrong. The hard part isn't changing the plan. It's communicating the change without losing your team's trust."
 tags: ["career", "engineering"]
