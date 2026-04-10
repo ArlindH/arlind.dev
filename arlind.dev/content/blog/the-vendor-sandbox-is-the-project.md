@@ -1,5 +1,5 @@
 ---
-title: "The Vendor Sandbox Is the Project"
+title: "The Hidden Project Inside Every Integration"
 date: 2026-04-10T12:00:00
 slug: "the-vendor-sandbox-is-the-project"
 description: "When you scope an enterprise integration as a coding task, you've already underestimated it. The credentials, certificates, and portal-access dance is the project."
