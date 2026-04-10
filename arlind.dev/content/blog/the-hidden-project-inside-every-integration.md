@@ -1,9 +1,11 @@
 ---
 title: "The Hidden Project Inside Every Integration"
 date: 2026-04-10T12:00:00
-slug: "the-vendor-sandbox-is-the-project"
+slug: "the-hidden-project-inside-every-integration"
 description: "When you scope an enterprise integration as a coding task, you've already underestimated it. The credentials, certificates, and portal-access dance is the project."
 tags: ["engineering", "career"]
+aliases:
+  - /blog/the-vendor-sandbox-is-the-project/
 draft: false
 ---
 
