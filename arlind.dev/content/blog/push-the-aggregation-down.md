@@ -1,6 +1,6 @@
 ---
 title: "Push the Aggregation Down"
-date: 2026-04-20T15:00:00
+date: 2026-04-20T13:00:00
 slug: "push-the-aggregation-down"
 description: "When your dashboard fetches 40,000 rows to compute three numbers, the fix isn't a cache. It's an annotation."
 tags: ["engineering", "tutorial"]
