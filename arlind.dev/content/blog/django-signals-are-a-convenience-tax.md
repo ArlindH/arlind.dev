@@ -1,5 +1,5 @@
 ---
-title: "Django Signals Are a Convenience Tax"
+title: "Django signals don't have a bulk path"
 date: 2026-04-06T14:00:00
 slug: "django-signals-are-a-convenience-tax"
 description: "Django's bulk operations skip signals, so if your side effects live in receivers you have no batch path, and you find out the day an admin action times out. Notes on what that cost us and how to keep both paths open."

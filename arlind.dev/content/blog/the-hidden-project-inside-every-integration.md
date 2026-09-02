@@ -1,5 +1,5 @@
 ---
-title: "The Hidden Project Inside Every Integration"
+title: "In an enterprise integration, the code is the small part"
 date: 2026-04-10T12:00:00
 slug: "the-hidden-project-inside-every-integration"
 description: "If you estimate an enterprise integration by reading the API docs, you've estimated the wrong project. The sandbox, the credentials, the certificates, and the customer's own IT team are most of the calendar."

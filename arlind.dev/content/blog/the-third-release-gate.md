@@ -1,5 +1,5 @@
 ---
-title: "The Third Release Gate"
+title: "Released is not the same as demoable"
 date: 2026-04-20T12:00:00
 slug: "the-third-release-gate"
 description: "Merged and released are not the end of a feature. There's a third check most teams never run: could someone demo this cold to a real prospect without apologizing for anything?"

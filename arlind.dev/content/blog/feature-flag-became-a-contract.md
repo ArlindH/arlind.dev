@@ -1,5 +1,5 @@
 ---
-title: "The Feature Flag That Became a Contract"
+title: "Who else reads your feature flag?"
 date: 2026-04-20T13:30:00
 slug: "feature-flag-became-a-contract"
 description: "A feature flag stays a temporary switch only until something else starts reading it. From that point it's a contract, and deleting it is a migration, not a cleanup ticket."

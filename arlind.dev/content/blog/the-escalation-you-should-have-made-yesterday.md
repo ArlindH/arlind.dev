@@ -1,5 +1,5 @@
 ---
-title: "The Escalation You Should Have Made Yesterday"
+title: "You're escalating too late"
 date: 2026-05-20T12:00:00
 slug: "the-escalation-you-should-have-made-yesterday"
 description: "Engineers wait too long to escalate, usually for reasons that feel like good manners. The message you've been avoiding for two weeks takes five minutes and unblocks more than anything else you'll do that week."

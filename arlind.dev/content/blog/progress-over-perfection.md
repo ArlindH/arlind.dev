@@ -1,5 +1,5 @@
 ---
-title: "Progress Over Perfection"
+title: "Knowing when good enough is good enough"
 date: 2026-04-06T12:00:00
 slug: "progress-over-perfection"
 description: "The engineers who ship slowest are often the strongest ones, because they keep polishing code that already solves the problem. This is the definition of good enough I actually use, and the tells that you've gone past it."

@@ -1,5 +1,5 @@
 ---
-title: "When a Demo Reshuffles Your Roadmap"
+title: "When a demo changes the roadmap"
 date: 2026-04-07T07:00:00
 slug: "when-a-demo-reshuffles-your-roadmap"
 description: "A demo will occasionally show you the roadmap is in the wrong order. Changing the plan is the easy part. Doing it without the team quietly deciding your roadmaps are fiction is the part that takes work."
