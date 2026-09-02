@@ -2,15 +2,15 @@
 title: "Hello World"
 date: 2026-04-06T08:00:00
 slug: "hello-world"
-description: "A brief introduction and what to expect from this blog."
+description: "What this site is for and what to expect from it."
 tags: ["reflection"]
 draft: false
 ---
 
-This is the beginning. A place to think out loud about the things I encounter in my work: the decisions, the tradeoffs, the lessons that only make sense in hindsight.
+This is the first post, so a short note on what this is.
 
-I plan to write about engineering and leadership, but also about the quieter things: how teams break down, what makes a good decision under pressure, the patterns that keep showing up across different problems.
+I write software, and these days I also manage a team that does. The same handful of problems keep showing up in different teams under different names, and I wanted somewhere to write them down properly instead of re-explaining them in Slack threads nobody can find a month later.
 
-Some posts will be deeply technical. Others will be more reflective. All of them will be honest.
+Expect a mix. Some posts will be technical, with code, about the kind of thing you run into when a Django codebase gets big and old. Others will be about how teams, roadmaps and customers behave, which is the other half of my job. The stories are anonymized, the lessons are not.
 
-If you're here, welcome. More soon.
+If you think I'm wrong about something, I'd like to hear it.

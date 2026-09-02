@@ -1,0 +1,15 @@
+{{ define "main" }}
+<div class="list-page">
+  <h1>{{ .Title }}</h1>
+  <ul class="post-list">
+    {{ range .Pages }}
+    <li>
+      <div class="post-row">
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        <span class="tag-count">{{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }}</span>
+      </div>
+    </li>
+    {{ end }}
+  </ul>
+</div>
+{{ end }}

@@ -2,59 +2,57 @@
 title: "When a Demo Reshuffles Your Roadmap"
 date: 2026-04-07T07:00:00
 slug: "when-a-demo-reshuffles-your-roadmap"
-description: "Customer demos will expose what your roadmap got wrong. The hard part isn't changing the plan. It's communicating the change without losing your team's trust."
+description: "A demo will occasionally show you the roadmap is in the wrong order. Changing the plan is the easy part. Doing it without the team quietly deciding your roadmaps are fiction is the part that takes work."
 tags: ["career", "engineering"]
 draft: false
 ---
 
-You're two weeks from finishing a milestone. The team is in a rhythm. The next milestone is scoped, the tickets are written, and the order of work is settled: Feature A first, then Feature B. It's clean. Everyone knows what's coming.
+You're two weeks from finishing a milestone. The team has a rhythm. The next milestone is scoped, the tickets exist, and the order is settled: Feature A first, then Feature B. Everyone knows what's coming.
 
-Then someone demos the product to a customer, and everything shifts.
+Then someone demos the product to a customer, and the order turns out to be wrong.
 
-## The feedback that rearranges everything
+## What the feedback looks like
 
-It usually doesn't come as a dramatic reveal. It's a comment during a sales call, a question from a prospect that nobody has a good answer to, or a demo where the audience fixates on a screen you considered secondary.
+It's rarely dramatic. It's a comment on a sales call, a question from a prospect that nobody has a good answer to, or a demo where the audience spends the whole time on a screen you considered secondary.
 
-Maybe you planned to build the reporting module next, then tackle the self-service portal later. That ordering made sense internally: the reporting work was already in motion, the designs were ready, and the team had momentum.
+Say you planned to build the reporting module next and the self-service portal after it. Internally that order made sense: reporting was already in motion, the designs were ready, the team had momentum. But in demo after demo the prospects kept asking about the self-service side. They wanted to see what their own users would touch, not the admin views. Reporting mattered, but the portal was the thing that would close deals.
 
-But the demos told a different story. Prospects kept asking about the self-service experience. They wanted to see what their end users would actually interact with, not just the admin views. Reporting was important, but the portal was the thing that would close deals.
+So the neat sequential plan needs to become parallel, or B needs to jump ahead of A entirely.
 
-Suddenly, your neat sequential roadmap needs to become parallel. Or worse, Feature B needs to jump ahead of Feature A entirely.
+## Why it's harder than it looks
 
-## Why this is harder than it sounds
+Changing priorities on a whiteboard takes a minute. Changing them in the team channel is a different thing.
 
-Changing priorities is easy on a whiteboard. It's hard in a team channel.
+Engineers don't push back on this because they're inflexible. They push back because they've already invested in the current plan. They've thought through the implementation, argued about tradeoffs, maybe started some groundwork. When you say "we're reprioritizing", what lands is "the thing you were preparing for matters less than we told you it did".
 
-Engineers don't resist change because they're inflexible. They resist it because they've already invested mental energy in the current plan. They've thought through implementation details, discussed trade-offs, maybe even started preliminary work. When you say "we're shifting priorities," what they hear is "the work you were preparing for doesn't matter as much as we said it did."
+Handle that badly and you lose something more expensive than a week of velocity. The next time you share a roadmap, people will mentally add "until the next demo" to every line on it.
 
-If you don't handle the communication well, you erode something more important than velocity: trust in the planning process itself. The next time you share a roadmap, people will mentally add "until the next demo" to every commitment.
+## Making the change without losing the team
 
-## How to make the pivot without losing the team
+A few things that have worked for me.
 
-**Name the signal, not just the decision.** Don't walk in with "we're reprioritizing." Walk in with "here's what we learned." Share the specific feedback. What did the prospect say? What question couldn't the sales team answer? When people understand the signal, the decision feels less arbitrary and more like a rational response to new information.
+Share the signal, not just the decision. Don't open with "we're reprioritizing". Open with what you learned. What did the prospect say? Which question couldn't sales answer? When the team can see the input, the decision stops looking arbitrary and starts looking like the obvious response to new information, which is what it is.
 
-**Acknowledge the disruption honestly.** The worst thing you can do is pretend the change is minor. If the team had a plan and you're changing it mid-stride, say so. "I know this shifts what we discussed. That's real, and I don't want to minimize it." People can handle changes. What they can't handle is a manager who pretends nothing changed.
+Say plainly that it's disruptive. The worst option is to pretend it's a small change. If there was a plan and you're changing it mid-stride, say that. "I know this shifts what we agreed, and I'm not going to pretend it doesn't." People deal with change fine. What they don't deal with is a manager acting like nothing happened.
 
-**Be specific about what this means for scope and timeline.** "We're doing both in parallel" sounds like a decision, but often it's the absence of one. If you're pulling work forward, something else needs to move back, shrink, or get cut. Parallel execution with the same team and the same deadline is a polite way of saying "crunch time." Be honest about what gives.
+Be specific about what gives. "We'll do both in parallel" sounds like a decision, and usually it's the absence of one. If you're pulling something forward, something else moves back, shrinks, or gets cut. Parallel work with the same people and the same deadline is a polite way of announcing crunch. Name the thing that gives.
 
-**Protect the work that already shipped.** The milestone the team just finished still matters. If you don't say that explicitly, the reprioritization can feel like it retroactively devalues their recent effort. Connect the dots: "The reporting work is why prospects are even having these conversations. Now we need to complete the picture."
+Protect the work that just shipped. The milestone the team finished still matters, and if you don't say so out loud, the change can feel like it retroactively devalued it. Connect the two: "The reporting work is why these prospects are talking to us at all. Now we need to finish the picture."
 
-## The deeper pattern: tighten your feedback loop
+## The underlying problem is the feedback loop
 
-A demo that reshuffles your roadmap isn't a failure of planning. It's your feedback loop working, just too late. The real problem is when you only learn about customer priorities during quarterly demos or late-stage sales calls. You end up planning in the dark for months at a time.
+A demo that reshuffles the roadmap isn't planning failing. It's the feedback loop working, just late. The real issue is when the only time you hear about customer priorities is a quarterly demo or a late-stage sales call, because then you're planning in the dark for months at a stretch.
 
-A few things that help:
+What helps:
 
-**Show rough work to sales before it's polished.** The instinct is to wait until a feature is demo-ready. But your go-to-market team talks to customers every week. A five-minute walkthrough of a work-in-progress screen can surface misalignment before it hardens into wasted sprints.
+Show rough work to sales before it's polished. The instinct is to wait until something is demo-ready. But the go-to-market team talks to customers every week, and a five-minute walkthrough of a half-done screen can surface a mismatch before it costs you a sprint.
 
-**Get feasibility checks before concepts reach customers.** If product or design shows a concept to a prospect without an engineering gut-check, you risk selling something that's six months out as if it's six weeks away. Sales promises, engineering scrambles, trust erodes on both sides. A quick "is this realistic on our timeline?" conversation before the demo can prevent a quarter of pain.
+Get an engineering gut check before a concept reaches a customer. If product or design shows a prospect something without asking whether it's realistic, you risk selling a six-month feature as a six-week one. Sales promises, engineering scrambles, and trust erodes in both directions. A quick "is this doable on our timeline" before the demo saves a lot of pain after it.
 
-**Limit active threads.** When you try to respond to every piece of feedback by adding another workstream, you end up with a team spread across three or four things, none of them moving fast enough. Pick one primary focus and one secondary. Everything else goes on the list with an honest "not now."
+Limit the number of active threads. If you respond to every piece of feedback by opening another workstream, you end up with a team spread across four things, none of them moving. One primary focus, one secondary, and an honest "not now" for the rest.
 
-## The real test
+## The test
 
-The measure of a healthy roadmap isn't that it never changes. It's that when it does, the team understands why, agrees the new direction makes sense, and trusts that their past work wasn't wasted.
+A healthy roadmap isn't one that never changes. It's one where, when it does change, the team understands why, agrees the new order makes sense, and believes the work they already did wasn't wasted.
 
-If you find yourself reshuffling priorities every few weeks, the problem isn't the demos. It's the distance between your planning process and your customers. Close that gap, and the shuffles get smaller, earlier, and less disruptive.
-
-The best roadmaps aren't the ones that survive contact with customers unchanged. They're the ones that change quickly, visibly, and with the team's confidence intact.
+If you're reshuffling every few weeks, the demos aren't the problem. The distance between your planning and your customers is. Close that, and the shuffles get smaller, earlier, and less painful.

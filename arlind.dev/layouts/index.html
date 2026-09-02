@@ -4,8 +4,23 @@
     {{ .Content }}
   </div>
 
-  <h2>Recent Posts</h2>
   {{ $posts := (where .Site.RegularPages "Section" "blog").ByDate.Reverse }}
+  {{ $featured := where $posts "Params.featured" true }}
+  {{ with $featured }}
+  <div class="start-here">
+    <h2>Start Here</h2>
+    <ul class="post-list">
+      {{ range . }}
+      <li>
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        {{ with .Description }}<p class="post-description">{{ . }}</p>{{ end }}
+      </li>
+      {{ end }}
+    </ul>
+  </div>
+  {{ end }}
+
+  <h2>Recent Posts</h2>
   {{ if $posts }}
   <ul class="post-list">
     {{ range first 10 $posts }}

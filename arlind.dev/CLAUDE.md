@@ -14,7 +14,12 @@ arlind.dev: personal blog for Arlind. Built with Hugo. Topics: career lessons, t
 - Single CSS file in `static/css/style.css`
 - Syntax highlighting: Chroma with CSS classes (`noClasses = false`), github (light) and github-dark (dark) themes appended to style.css
 - Fonts: Inter (body/UI) and Lora (home intro) via Google Fonts
-- No custom JavaScript (only Google Analytics gtag)
+- JavaScript: Google Analytics gtag, plus Mermaid loaded from CDN only on pages that contain a mermaid code block
+- About page at `content/about.md` (uses `layouts/_default/plain.html` via `layout: "plain"`)
+- Tags link to `/tags/<tag>/` (term pages use `list.html`, the `/tags/` index uses `terms.html`)
+- `featured: true` in a post's front matter puts it in the "Start Here" block on the homepage (keep it to about three posts)
+- Default social card image at `static/og-default.png`; a post can override it with `image:` in front matter
+- Posts end with older/newer navigation within the blog section
 - Deploy: cron polls GitHub every 3 minutes, pulls new commits, runs `hugo --minify`
 - Deploy script tracks last built commit in `/var/www/arlind.dev/.built-commit` to handle local pushes
 - Served by Caddy at https://arlind.dev
@@ -59,6 +64,8 @@ Note: Include a time component in `date` to control ordering when multiple posts
 - Target 800-1500 words unless the topic demands more
 - The `description` field is critical -- it appears in search results, social cards, and as the TL;DR at the top of each article
 - Never use em dashes. Use commas, periods, or restructure the sentence instead
+- Voice check (Arlind flagged earlier posts as reading AI-generated for exactly these reasons): plain connected sentences with the reasoning inline, "you" more than "I", hedge where honest ("in my experience"). No staccato fragments ("Clean. Elegant. Extensible."), no "It's not X. It's Y." pairs, no "Here's the thing", no bold lead-ins on every bullet, no one-line punchline endings, tables only when the data genuinely needs columns
+- The `description` must be one or two plain sentences, never "Here's what X costs and how to Y"
 - Never use the surname "Hoxha". Just use "Arlind" or nothing at all
 - Reference the site as arlind.dev, not by full name
 

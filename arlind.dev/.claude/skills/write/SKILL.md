@@ -76,6 +76,8 @@ Writing style:
 - Concrete examples and specific details (anonymized)
 - 800-1500 words unless the topic demands more
 - Never use em dashes. Use commas, periods, or restructure instead
+- Voice check before showing a draft: plain connected sentences with the reasoning inline, "you" more than "I", hedge where honest. No staccato fragments, no "It's not X. It's Y." pairs, no "Here's the thing", no bold lead-ins on every bullet, no one-line punchline endings, tables only when the data genuinely needs columns. Arlind flagged earlier drafts as reading AI-generated for exactly these reasons
+- The description is one or two plain sentences, never "Here's what X costs and how to Y"
 - Never use the surname "Hoxha". Just "Arlind" or nothing
 - Reference the site as arlind.dev
 

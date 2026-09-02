@@ -1,4 +1,4 @@
 ---
 title: "Blog"
-description: "Career lessons, technical deep-dives, and personal reflections."
+description: "Notes on software engineering, and the occasional post on how teams and roadmaps behave in practice."
 ---

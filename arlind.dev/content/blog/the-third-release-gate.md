@@ -2,14 +2,14 @@
 title: "The Third Release Gate"
 date: 2026-04-20T12:00:00
 slug: "the-third-release-gate"
-description: "Between 'released' and 'adopted' sits a gate most teams skip: could a salesperson demo this cold, right now, without hedging or apologizing?"
+description: "Merged and released are not the end of a feature. There's a third check most teams never run: could someone demo this cold to a real prospect without apologizing for anything?"
 tags: ["engineering", "career"]
 draft: false
 ---
 
-Engineering orgs run two release gates. **Merged**: code is in main, tests green. **Released**: the flag is on for some audience, the feature works end to end.
+Most engineering orgs have two release gates. Merged: the code is in main and the tests are green. Released: the flag is on for some audience and the feature works end to end.
 
-There's a third, and most teams skip it. Call it **demo-ready**.
+There's a third one that most teams skip, and I've started calling it demo-ready.
 
 ```mermaid
 flowchart LR
@@ -21,91 +21,72 @@ flowchart LR
     class D skipped;
 ```
 
-The question demo-ready asks is uncomfortable.
+The question it asks is uncomfortable: could a salesperson demo this right now, cold, to a real prospect, without hedging or apologizing?
 
-> Could a salesperson demo this right now, cold, to a real prospect, without hedging or apologizing?
+If the answer is no, the feature isn't done. It's in production, it's technically released, but it hasn't crossed the gate that decides whether anyone adopts it.
 
-If the answer is no, the feature isn't done. It's in production, yes. It's released, technically. But it hasn't crossed the gate that matters for adoption.
+## The three gates
 
-## The three gates side by side
+Each one answers a different question, has a different owner, and fails in a different way when you skip it.
 
-Each gate answers a different question, has a different owner, and fails in a different way when you skip it.
+Merged asks whether the code works. The author and the reviewers own it. You know it passed when tests are green and the review is approved. Skip it and you break main.
 
-|  | **Merged** | **Released** | **Demo-Ready** |
-|--|------------|--------------|----------------|
-| **Question** | Does the code work? | Can customers reach it? | Could a stranger see this cold? |
-| **Owner** | Author and reviewers | PM or release manager | Someone with customer proximity |
-| **Signal it passed** | Tests green, review approved | Flag on for the audience | Cold demo with no apologies |
-| **Cost of skipping** | Broken main | Feature invisible | Feature adopted on paper only |
+Released asks whether customers can reach it. A PM or a release manager owns it. You know it passed when the flag is on for the intended audience. Skip it and the feature is invisible.
 
-The first two gates have obvious owners. The third doesn't, so it gets skipped by default.
+Demo-ready asks whether a stranger could see this cold and not be put off. It should be owned by someone close to customers. You know it passed when someone did a cold demo with nothing to apologize for. Skip it and the feature is adopted on paper only.
 
-## Why the gate gets skipped
+The first two have obvious owners. The third doesn't, so by default nobody drives it.
 
-Engineers optimize for "works". Once the tests pass and the feature behaves correctly on the happy path, they move on. Edge cases that a careful user would notice ("why is the empty state just a blank table?") live on the backlog forever because they don't block anything.
+## Why it gets skipped
 
-Product managers optimize for scope. If the feature does what the spec said, they mark it done. Polish is a separate ticket someone else owns.
+Engineers optimize for "works". Once the tests pass and the happy path behaves, they move on. The things a careful user would notice ("why is the empty state a blank table?") sit in the backlog forever, because they don't block anything.
 
-Sales doesn't know what to ask for. They try the feature once, hit a rough edge, file "product feels janky" in a CRM note, and work around it for the rest of the quarter.
+Product managers optimize for scope. If the feature does what the spec said, it's done. Polish is a separate ticket that someone else owns.
 
-No one is accountable for demo-readiness, so no one drives it.
+Sales doesn't know what to ask for. They try the feature once, hit a rough edge, write "product feels a bit janky" in a CRM note, and work around it for the rest of the quarter.
 
-## What "demo-ready" actually means
+Nobody is accountable for demo-readiness, so nobody does it.
 
-It isn't subjective. There's a repeatable checklist.
+## What demo-ready means in practice
 
-| # | Check | What it rules out |
-|---|-------|-------------------|
-| 1 | Happy path runs in under thirty seconds | Prospect attention drift |
-| 2 | Empty state is designed, not default | "This looks unfinished" |
-| 3 | Error state is graceful | Catastrophic failure mid-demo |
-| 4 | Seed data is plausible | "They don't sweat the details" |
-| 5 | Performance is predictable | Demoer surprised mid-sentence |
-| 6 | Every visible UI element works | "Ignore that button" moments |
-| 7 | Copy reads naturally at a glance | Confused questions about labels |
+It's less subjective than it sounds. The list I use:
 
-A few of these deserve a sentence each.
+1. The happy path runs in under thirty seconds. Any longer and the prospect's attention drifts.
+2. The empty state is designed, not the default. A blank table reads as unfinished.
+3. Errors fail gracefully. A stack trace mid-demo ends the demo.
+4. The seed data is plausible. Accounts named "test1", "asdfasdf", or "Lorem Ipsum Corp" tell the prospect you don't sweat details. It's a cheap fix and a loud signal.
+5. Performance is predictable. Not necessarily fast, but the same every time, so the person narrating can plan around the wait instead of being surprised by a spinner that took thirty seconds instead of three.
+6. Every visible element works. Feature-flag out the half-finished buttons. "Ignore that, it's coming next sprint" ends the demo for the audience even if the demoer recovers.
+7. The copy reads naturally. Labels shouldn't generate questions.
 
-**Performance predictable, not fast.** It doesn't have to be a flash. It has to be the same speed every time, so the person narrating can plan around the wait instead of getting caught mid-sentence by a spinner that hung for thirty seconds instead of three.
+When all seven hold, the feature is demo-ready.
 
-**Plausible seed data.** Accounts named "test1", "asdfasdf", or "Lorem Ipsum Corp" tell the prospect that your team doesn't think about details. It's a cheap fix and a large signal.
+The same list works outside a sales motion. For self-serve products, replace "salesperson" with "first-time user". For developer tools, replace "demo" with "README walkthrough". Wherever a stranger meets your product with no context and forms an opinion in the first thirty seconds, this gate applies.
 
-**Visible but broken is worse than invisible.** Feature-flag out the half-finished buttons and dropdowns. "Ignore that, it's coming next sprint" ends the demo for the audience even if the demoer recovers.
+## Who owns it
 
-A feature passes the gate when all seven rows are green.
+Not the engineer who built it. They're too close. They look at a stack trace and see the fix. A prospect looks at a stack trace and sees a red flag.
 
-The checklist holds outside a traditional sales motion too. For self-serve products, swap "salesperson" for "first-time user". For developer tools, swap "demo" for "README walkthrough". Wherever a stranger encounters your product without context and forms an opinion in the first thirty seconds, the same gate applies.
+Not the PM who scoped it either. The backlog is long and "good enough for now" is tempting.
 
-## Who owns the gate
+It should be someone with customer proximity and no stake in the build. In a company with a sales motion, that's a sales engineer, a product marketer, or a PM who runs demos. Their job is to attempt a cold demo on a clean account and come back with the list of things they'd apologize for. That list is the gate. When it's empty, you're through.
 
-Not the engineer who built it. They're too close. They'll look at a stack trace and see the fix. A prospect looks at a stack trace and sees a red flag.
+## Putting it in the release flow
 
-Not the PM who scoped it. They'll be tempted to say "good enough for now" because the backlog is long.
+Make it a status, not an opinion. A distinct step in the workflow between "released to early customers" and "generally available". Call it demo-ready, GA-ready, launch-ready, whatever fits. The name matters less than the fact that a ticket sits in it.
 
-The owner should be someone with customer proximity and no personal investment in the build. In a company with a sales motion, that's a sales engineer, a product marketer, or a PM who runs demos. Their job is to attempt a cold demo on a clean account and report back with the list of things they'd apologize for.
+The ticket closes when a demo happens. Someone opens a clean account, walks through the flow as a prospect would, and files no bugs.
 
-That list is the gate. When the list is empty, the feature is demo-ready.
+Some teams attach the gate to a demo day. Weekly, monthly, whatever cadence fits, and every feature that claims to be demo-ready gets demoed. Bugs surface. Embarrassments surface. It works because it's public and external. The engineer can't grade their own feature.
 
-## How to build it into your release flow
+## What happens without it
 
-Make it a ticket. Not a "polish" ticket. A distinct status in your workflow, sitting between "released to early customers" and "listed as generally available". Call it whatever makes sense: demo-ready, GA-ready, launch-ready. The name matters less than the fact that it's a status, not an opinion.
+The sequence is predictable. Sales tries the feature once, hits a rough edge, and avoids showing it for the rest of the quarter. The feature's usage numbers look worse than expected because prospects never saw it. Somebody asks in a quarterly review why the big Q1 feature didn't move the number. The team concludes the feature didn't land.
 
-The ticket closes when a demo happens. Someone opens a clean demo account, walks through the flow as a prospect would, and files no bugs. That's the signal.
+Six months later you ship a "V2" that is really the demo-ready version of V1. You spend the polish budget you should have spent before the flag was flipped, and the prospects who saw V1 don't come back. Two launches to ship one demoable feature.
 
-Some teams bake the gate into a demo day. Once a week, once a month, whatever the cadence, features that claim to be demo-ready get demoed. Bugs surface. Embarrassments surface. The gate works because it's public and external. The engineer can't grade their own feature.
+## A simpler way to put it
 
-## What happens when you skip the gate
+Released is a state the software is in. Demo-ready is a state a human is in when they decide whether to show your product to another human. They're different states, and teams that treat them as the same one find out the hard way.
 
-A predictable sequence.
-
-Sales tries the feature once, hits a rough edge, and avoids demoing it for the rest of the quarter. The feature's telemetry looks worse than expected because prospects never saw it. Someone in a QBR asks why the big feature from Q1 didn't move the number. The team concludes the feature didn't land.
-
-Six months later, you ship a "V2" that's actually the demo-ready version of V1. You spend the polish budget you should have spent before the flag was ever flipped on.
-
-The prospects who saw V1 don't come back. You lost the compounding effect of the original release, and you paid for two launches to ship one demoable feature.
-
-## A simpler frame
-
-Released is the state the software is in. Demo-ready is the state a human is in when they decide whether to show your product to another human. Those are not the same state, and teams that treat them as the same find out the hard way.
-
-The third gate is cheap to add and expensive to skip. Add it.
+The third gate is cheap to add and expensive to skip.

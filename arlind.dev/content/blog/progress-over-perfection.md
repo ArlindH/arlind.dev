@@ -1,92 +1,75 @@
 ---
-title: "Progress Over Perfection: How to Ship When Your Code Embarrasses You"
+title: "Progress Over Perfection"
 date: 2026-04-06T12:00:00
 slug: "progress-over-perfection"
-description: "Why the best engineers struggle most with shipping imperfect code, and how to build the instinct for when good enough actually is."
+description: "The engineers who ship slowest are often the strongest ones, because they keep polishing code that already solves the problem. This is the definition of good enough I actually use, and the tells that you've gone past it."
 tags: ["engineering", "reflection"]
 draft: false
 ---
 
-There's a moment in every project where you look at the code you're about to ship and feel a quiet dread. Not because it's broken. It works. It passes tests. It does what the customer needs. But it's not *right*. You can see the shortcuts, the places where you traded elegance for speed, the abstractions you didn't have time to build.
+At some point in most projects you end up looking at the code you're about to ship and not liking it. It works, the tests pass, it does what the customer asked for. But you can see the shortcuts. The abstraction you didn't build, the two functions that should be one, the retry logic you know you'll want eventually.
 
-If you're a good engineer, this feeling is familiar. And if you're not careful, it will make you slow.
+If you're good at this job, that feeling is familiar. It's also, in my experience, the main reason good engineers ship slowly.
 
-## The trap of caring too much
+## Caring too much
 
-Early in my career, I thought the best engineers were the ones who wrote the cleanest code. I admired the people who would spend an extra day refactoring before a merge, who insisted on getting the interface exactly right before shipping.
+Early on I thought the best engineers were the ones with the cleanest code. The people who took an extra day to refactor before merging, who wouldn't ship until the interface was right. I still respect that, but I no longer think it's what makes someone effective.
 
-I was wrong. The best engineers I've worked with care deeply about quality *and* ship constantly. They've developed an instinct for when perfection matters and when it doesn't. That instinct is harder to build than any technical skill.
+The best people I've worked with care a lot about quality and also ship constantly. Somewhere along the way they built an instinct for when the polish matters and when it doesn't, and that instinct turned out to be harder to learn than any of the technical skills.
 
-The trap is subtle. You're not procrastinating. You're not being lazy. You're doing what feels like the right thing: making the code better. But "better" is infinite, and the customer is waiting.
+The trap is that it never feels like procrastination. You're not being lazy, you're making the code better. The problem is that "better" has no end, and someone is waiting.
 
-## The pattern I keep seeing
+## The pattern
 
-I've watched this play out on multiple teams now, and it almost always looks the same. Someone picks up a feature. The straightforward approach would take a few days. But they see the bigger picture, the scale it might need to handle someday, the abstraction that would make it "right." So instead of the simple approach, they start building the robust one. Background jobs, retry logic, graceful degradation, the works.
+I've watched this happen on several teams and it always looks about the same. Someone picks up a feature. The straightforward version would take a few days. But they can see where it might go, the scale it might need to handle one day, the abstraction that would make it "right", so they build the robust version instead. Background jobs, retries, graceful degradation, the works.
 
-Weeks later, the feature finally ships. The customer uses it for a fraction of the load anyone imagined. The elegant infrastructure sits idle. And the three other things that could have shipped in that time didn't.
+The feature ships weeks later. The customer uses it at a fraction of the load anyone imagined. The infrastructure sits idle. And the three other things that could have shipped in that time didn't.
 
-This isn't a story about one team or one person. I've seen it happen everywhere I've worked. And the engineer who does it is almost always one of the strongest on the team. That's what makes it so insidious. It's not incompetence. It's misplaced excellence. They're solving for the system they imagine, not the one that exists.
+The person who does this is almost always one of the strongest on the team, which is what makes it hard to push back on. It isn't incompetence. It's good engineering pointed at a system that doesn't exist yet.
 
-## The cost of over-engineering is invisible
+## The cost you don't see
 
-When you ship something ugly but functional, the cost is visible. You can see the TODO comments. You can feel the cringe when a colleague reads your code. It sits in your chest during standup.
+When you ship something ugly but working, the cost is right in front of you. The TODO comments. The slight cringe when a colleague opens the file. You feel it during standup.
 
-But when you over-engineer, the cost is invisible. Nobody sees the features that didn't ship while you were perfecting the one that did. Nobody counts the customer conversations that didn't happen because the product wasn't ready. Nobody measures the morale cost of a deadline that slipped because "we're almost done, just cleaning things up."
+When you over-engineer, nobody sees the cost, because the cost is everything that didn't happen. The features that didn't ship. The customer conversations that didn't happen because the product wasn't ready. The deadline that slipped by two weeks because "we're almost done, just cleaning things up".
 
-I've seen teams lose months to premature abstraction. Building for scale they didn't have. Designing for flexibility they didn't need. Perfecting interfaces for integrations that hadn't been signed yet.
+I've seen teams lose months to this. Building for scale they didn't have, designing for flexibility they didn't need, perfecting interfaces for integrations that hadn't been signed. And it feels responsible the whole time, because you're "avoiding tech debt". Debt you take on deliberately is a tool. Debt you avoid by not shipping is fear with a professional excuse.
 
-The worst part is that it feels responsible. You're "doing it right." You're "avoiding tech debt." But tech debt you take on deliberately, with eyes open, is a tool. Tech debt you avoid at the cost of not shipping is just fear wearing a professional mask.
+## What good enough means
 
-## What I actually mean by "good enough"
+I want to be specific here, because "just ship it" is bad advice on its own. I'm not talking about skipping tests, ignoring security, or writing something so tangled that the next person loses a week understanding it.
 
-I want to be precise here, because "just ship it" can be terrible advice. I'm not talking about skipping tests. I'm not talking about ignoring security. I'm not talking about writing code so sloppy that the next person who touches it will waste a week understanding it.
+My working definition is short. The code solves the problem the customer has today. The critical paths have tests. It doesn't introduce a security hole. And another engineer can read it and understand what it does and why.
 
-Here's my working definition of "good enough":
+That's the whole bar. Not every edge case you can imagine. Not ten times the current load. Not the perfect abstraction. Not something you'd show at a conference.
 
-**The code solves the actual problem the customer has today. It has tests for the critical paths. It doesn't introduce security vulnerabilities. And another engineer can understand what it does and why.**
+A few things I've learned to let go of:
 
-That's it. Not: it handles every edge case you can imagine. Not: it scales to 10x the current load. Not: the abstraction is perfect. Not: you'd be proud to show it at a conference.
+- The perfect abstraction. If you're building something for the first time, you don't know enough to design it yet. Write the concrete version. By the second or third time you need it, the right shape is usually obvious.
+- Scale you don't have. With a hundred users, don't build for ten thousand. Those hundred users will teach you things that change what "scaling" even means. I've seen caching layers built for data that customers never ended up requesting.
+- Theoretical edge cases. If no customer has hit it and no realistic path triggers it, it's a thought experiment, not a bug. Fix it when someone hits it, with real context instead of an imagined scenario.
 
-A few specific things I've learned to let go of:
+## The conversation nobody enjoys
 
-**Let go of the perfect abstraction.** If you're building something for the first time, you don't know enough to design the right abstraction yet. Write the concrete thing. When you build the second and third version, the right abstraction will be obvious.
+The hard part isn't technical. It's a conversation I've had a few times with an engineer about code they wrote under pressure. It works. Customers use it every day. And they're embarrassed by it and want to rewrite it before anyone else has to touch that part of the codebase.
 
-**Let go of premature scale.** If you have a hundred users, don't build for ten thousand. You'll learn things from those hundred users that completely change what "scaling" even means. I've seen teams build elaborate caching layers for data that customers didn't even end up accessing.
+What I tell them is that the code that shipped and solves a real problem is better than the beautiful version sitting in a branch. Not philosophically better. Better in the plain sense: it's producing value, it's showing you what the customer actually needs, and it's buying you the right to do the rewrite later with real usage data instead of guesses.
 
-**Let go of theoretical edge cases.** If no customer has hit a bug, and no realistic scenario would trigger it, it's not a bug. It's a thought experiment. Fix it when someone encounters it, and you'll fix it with real context instead of imagined scenarios.
+Nobody likes hearing this. The urge to make things right is what makes them good in the first place. Knowing when to override it is what makes them effective.
 
-## The hardest conversation
+## Building the instinct
 
-The real challenge isn't technical. It's emotional.
+I don't think you can reason your way into this. It comes from experience, but a few habits speed it up:
 
-I had a conversation with an engineer once about a piece of code he'd written during a crunch period. It worked perfectly. Customers were using it daily. But he was embarrassed by it. He wanted to rewrite it before anyone else had to work in that part of the codebase.
+- Ask who is waiting. A real customer, a real user, a teammate blocked on your work. Perfection for its own sake is a luxury. Shipping for someone who needs it is a responsibility.
+- Pick a ship date before you start. Not a deadline in the stressful sense, a decision point. "Thursday we ship what we have." It forces scope decisions early instead of letting you discover at the end that you've been gold-plating.
+- Read your own diff like a stranger. Before adding one more improvement, read it from scratch. Is it clear? Does it work? Would you approve it as a reviewer? Then stop touching it.
+- Keep track of what you actually go back and fix. I started paying attention to which of my shortcuts came back to bite me. It was maybe one in five. The rest were fine. That number did more for my relationship with imperfect code than any argument.
 
-I told him something I believe deeply: the code that ships and solves real problems is better than the code that's beautiful and sitting in a branch. Not in some abstract philosophical sense. Literally better. It's generating value. It's teaching you what the customer actually needs. It's earning the right for you to spend time on the rewrite later, because now you have real usage data instead of guesses.
+## Holding both
 
-He didn't love hearing it. Good engineers never do. The instinct to make things right is what makes them good in the first place. But learning when to override that instinct is what makes them effective.
+Caring about code quality is necessary but not sufficient. The engineers with the most impact can hold two things at once: this could be better, and it's time to ship. The "and" is doing all the work in that sentence.
 
-## How to build the instinct
+Progress over perfection isn't a lower standard. It's the same standard aimed at the right thing. Not "is this code beautiful" but "does this solve the problem it needs to solve, reliably, now". That's a harder question than it sounds, because answering it means knowing the problem, knowing the customer, and being honest with yourself about whether the extra day of polish is for them or for you.
 
-I don't think you can reason your way into this. It's a pattern you develop through experience. But a few practices have helped me and the teams I've worked with:
-
-**Ask "who is waiting for this?"** If there's a real customer, a real user, a real teammate blocked on your work, that changes the calculus. Perfection for its own sake is a luxury. Shipping for someone who needs it is a responsibility.
-
-**Set a "ship date" before you start.** Not a deadline in the stressful sense. A decision point. "By Thursday, we ship what we have." It forces you to make scope decisions early instead of discovering at the end that you've been gold-plating.
-
-**Review your own PR like a stranger would.** Before you add "one more improvement," read your diff from scratch. Is it clear? Does it work? Would a reviewer approve it? If yes, stop touching it.
-
-**Track what you actually go back and fix.** I started paying attention to which shortcuts I took that I actually had to revisit. The answer was maybe 20%. The other 80% were fine. That data changed my relationship with imperfect code.
-
-## The paradox
-
-Here's what I've come to believe: caring about code quality is necessary, but insufficient. The engineers who have the biggest impact are the ones who can hold two things in their head at once. This code could be better, *and* it's time to ship.
-
-That "and" is everything. Not "but." Not "so let me just." And.
-
-The code could be better, and the customer needs it now. The abstraction isn't perfect, and we'll learn more from shipping than from thinking. I'm not fully proud of this, and it's solving a real problem.
-
-Progress over perfection isn't about lowering your standards. It's about applying them to the right thing. The standard isn't "is this code beautiful?" The standard is "is this solving the problem it needs to solve, reliably, right now?"
-
-That's a harder standard to meet than it sounds. Because it requires you to know the problem, know the customer, and know yourself well enough to recognize when your desire to improve the code is serving them and when it's serving your ego.
-
-Most of the time, good enough actually is.
+Most of the time, good enough is.
